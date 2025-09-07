@@ -1,6 +1,3 @@
+mod segment_tree;
 
-
-fn main() {
-
-}
-
+fn main() {}
