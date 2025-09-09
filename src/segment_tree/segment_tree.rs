@@ -1,3 +1,4 @@
+#[derive(Debug)]
 enum Result {
     Max,
     Min,
@@ -85,7 +86,7 @@ impl SegmentTree {
     }
 
     fn print_tree_structure(&self) {
-        println!("Segment Tree (Sum value)");
+        println!("Segment Tree ({:?})", self.result);
         for (i, val) in self.tree.iter().enumerate() {
             if *val == 0 {
                 continue;
@@ -110,6 +111,8 @@ fn main() {
     let mut seg_tree = SegmentTree::construct_and_build(&example_input, Result::Min);
     seg_tree.print_tree_structure();
     seg_tree.update(1, 20);
+    seg_tree.print_tree_structure();
+    let mut seg_tree = SegmentTree::construct_and_build(&example_input, Result::Sum);
     seg_tree.print_tree_structure();
 }
 
