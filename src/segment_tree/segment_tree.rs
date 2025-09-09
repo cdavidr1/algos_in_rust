@@ -1,19 +1,46 @@
+enum Result {
+    Max,
+    Min,
+    Sum,
+}
 struct SegmentTree {
     nodes: usize,
     tree: Vec<i32>,
+    result: Result,
 }
 
 impl SegmentTree {
-    fn construct_and_build(input: &[i32]) -> Self {
-        let mut tree = Self::new(input.len());
+    fn construct_and_build(input: &[i32], result: Result) -> Self {
+        let mut tree = Self::new(input.len(), result);
         tree.build(&input, 1, 0, tree.nodes - 1);
         tree
     }
 
-    fn new(nodes: usize) -> Self {
+    fn new(nodes: usize, result: Result) -> Self {
         Self {
             nodes,
             tree: vec![0; 4 * nodes],
+            result,
+        }
+    }
+
+    fn find_result(&mut self, left: i32, right: i32) -> i32 {
+        match self.result {
+            Result::Max => {
+                if right > left {
+                    right
+                } else {
+                    left
+                }
+            }
+            Result::Min => {
+                if right < left {
+                    right
+                } else {
+                    left
+                }
+            }
+            Result::Sum => left + right,
         }
     }
 
@@ -24,7 +51,7 @@ impl SegmentTree {
             let mid = (left + right) / 2;
             self.build(input, vertex * 2, left, mid);
             self.build(input, vertex * 2 + 1, mid + 1, right);
-            self.tree[vertex] = self.tree[vertex * 2] + self.tree[vertex * 2 + 1];
+            self.tree[vertex] = self.find_result(self.tree[vertex * 2], self.tree[vertex * 2 + 1]);
         }
     }
 
@@ -52,7 +79,7 @@ impl SegmentTree {
             } else {
                 self.update_helper(index, value, vertex * 2 + 1, mid + 1, right);
             }
-            self.tree[vertex] = self.tree[vertex * 2] + self.tree[vertex * 2 + 1];
+            self.tree[vertex] = self.find_result(self.tree[vertex * 2], self.tree[vertex * 2 + 1]);
         }
     }
 
@@ -79,7 +106,7 @@ impl SegmentTree {
 
 fn main() {
     let example_input = vec![4, 2, 8];
-    let mut seg_tree = SegmentTree::construct_and_build(&example_input);
+    let mut seg_tree = SegmentTree::construct_and_build(&example_input, Result::Min);
     seg_tree.print_tree_structure();
     seg_tree.update(1, 20);
     seg_tree.print_tree_structure();
