@@ -3,6 +3,7 @@ enum Result {
     Min,
     Sum,
 }
+
 struct SegmentTree {
     nodes: usize,
     tree: Vec<i32>,
