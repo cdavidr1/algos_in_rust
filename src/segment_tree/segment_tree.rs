@@ -7,7 +7,7 @@ enum Result {
 
 struct SegmentTree {
     nodes: usize,
-    tree: Vec<i32>,
+    tree: Vec<(i32, i32)>,
     result: Result,
 }
 
@@ -21,34 +21,39 @@ impl SegmentTree {
     fn new(nodes: usize, result: Result) -> Self {
         Self {
             nodes,
-            tree: vec![0; 4 * nodes],
+            tree: vec![(0, 0); 4 * nodes],
             result,
         }
     }
 
-    fn find_result(&mut self, left: i32, right: i32) -> i32 {
+    fn find_result(&self, left: (i32, i32), right: (i32, i32)) -> (i32, i32) {
         match self.result {
             Result::Max => {
-                if right > left {
+                if right.0 == left.0 {
+                    (right.0, right.1 + left.1)
+                } else if right.0 > left.0 {
                     right
                 } else {
                     left
                 }
             }
             Result::Min => {
-                if right < left {
+                if right.0 == left.0 {
+                    (right.0, right.1 + left.1)
+                } else if right.0 < left.0 {
                     right
                 } else {
                     left
                 }
             }
-            Result::Sum => left + right,
+            Result::Sum => (left.0 + right.0, left.1 + right.1),
         }
     }
 
     fn build(&mut self, input: &[i32], vertex: usize, left: usize, right: usize) {
         if left == right {
-            self.tree[vertex] = input[left];
+            self.tree[vertex].0 = input[left];
+            self.tree[vertex].1 = 1;
         } else {
             let mid = (left + right) / 2;
             self.build(input, vertex * 2, left, mid);
@@ -73,7 +78,8 @@ impl SegmentTree {
             return;
         }
         if left == right {
-            self.tree[vertex] = value;
+            self.tree[vertex].0 = value;
+            self.tree[vertex].1 = 1;
         } else {
             let mid = (left + right) / 2;
             if index <= mid {
@@ -87,14 +93,14 @@ impl SegmentTree {
 
     fn print_tree_structure(&self) {
         println!("Segment Tree ({:?})", self.result);
-        for (i, val) in self.tree.iter().enumerate() {
-            if *val == 0 {
+        for (i, (r, m)) in self.tree.iter().enumerate() {
+            if *r == 0 {
                 continue;
             }
             if Self::is_power_of_two(i) {
-                println!("  [{}]: {}", i, val);
+                println!("  [{}]: {},{}", i, r, m);
             } else {
-                print!("  [{}]: {}", i, val);
+                print!("  [{}]: {},{}", i, r, m);
             }
         }
         println!();
@@ -112,7 +118,19 @@ fn main() {
     seg_tree.print_tree_structure();
     seg_tree.update(1, 20);
     seg_tree.print_tree_structure();
-    let mut seg_tree = SegmentTree::construct_and_build(&example_input, Result::Sum);
+    let seg_tree = SegmentTree::construct_and_build(&example_input, Result::Sum);
+    seg_tree.print_tree_structure();
+
+    // Max
+    let seg_tree = SegmentTree::construct_and_build(&example_input, Result::Max);
+    seg_tree.print_tree_structure();
+    let max_dup_input = vec![9, 7, 4, 9, 2, 3, 9];
+    let seg_tree = SegmentTree::construct_and_build(&max_dup_input, Result::Max);
+    seg_tree.print_tree_structure();
+    let min_dup_input = vec![1, 2, 3, 1, 4, 2, 1];
+    let seg_tree = SegmentTree::construct_and_build(&min_dup_input, Result::Min);
+    seg_tree.print_tree_structure();
+    let seg_tree = SegmentTree::construct_and_build(&min_dup_input, Result::Sum);
     seg_tree.print_tree_structure();
 }
 
@@ -123,7 +141,7 @@ mod tests {
     #[test]
     fn seg_tree_constructs() {
         let nodes = 3;
-        let tree = SegmentTree::new(nodes);
+        let tree = SegmentTree::new(nodes, Result::Max);
         assert_eq!(tree.nodes, nodes);
         assert_eq!(tree.tree.len(), 4 * nodes);
     }
