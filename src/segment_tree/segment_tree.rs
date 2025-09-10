@@ -3,6 +3,8 @@ enum Result {
     Max,
     Min,
     Sum,
+    GCD,
+    LCM,
 }
 
 struct SegmentTree {
@@ -47,9 +49,22 @@ impl SegmentTree {
                 }
             }
             Result::Sum => (left.0 + right.0, left.1 + right.1),
+            Result::GCD => (Self::gcd(left.0, right.0), left.1 + right.1),
+            Result::LCM => (
+                (left.0 * right.0) / Self::gcd(left.0, right.0),
+                left.1 + right.1,
+            ),
         }
     }
 
+    fn gcd(mut a: i32, mut b: i32) -> i32 {
+        while b != 0 {
+            let temp = b;
+            b = a % b;
+            a = temp;
+        }
+        a
+    }
     fn build(&mut self, input: &[i32], vertex: usize, left: usize, right: usize) {
         if left == right {
             self.tree[vertex].0 = input[left];
@@ -121,7 +136,7 @@ fn main() {
     let seg_tree = SegmentTree::construct_and_build(&example_input, Result::Sum);
     seg_tree.print_tree_structure();
 
-    // Max
+    // Max / Min
     let seg_tree = SegmentTree::construct_and_build(&example_input, Result::Max);
     seg_tree.print_tree_structure();
     let max_dup_input = vec![9, 7, 4, 9, 2, 3, 9];
@@ -131,6 +146,13 @@ fn main() {
     let seg_tree = SegmentTree::construct_and_build(&min_dup_input, Result::Min);
     seg_tree.print_tree_structure();
     let seg_tree = SegmentTree::construct_and_build(&min_dup_input, Result::Sum);
+    seg_tree.print_tree_structure();
+
+    // GCD / LCM
+    let seg_tree = SegmentTree::construct_and_build(&example_input, Result::GCD);
+    seg_tree.print_tree_structure();
+
+    let seg_tree = SegmentTree::construct_and_build(&example_input, Result::LCM);
     seg_tree.print_tree_structure();
 }
 
