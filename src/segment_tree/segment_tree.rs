@@ -5,6 +5,7 @@ enum Result {
     Sum,
     GCD,
     LCM,
+    Zeros,
 }
 
 struct SegmentTree {
@@ -48,7 +49,7 @@ impl SegmentTree {
                     left
                 }
             }
-            Result::Sum => (left.0 + right.0, left.1 + right.1),
+            Result::Sum | Result::Zeros => (left.0 + right.0, left.1 + right.1),
             Result::GCD => (Self::gcd(left.0, right.0), left.1 + right.1),
             Result::LCM => (
                 (left.0 * right.0) / Self::gcd(left.0, right.0),
@@ -57,17 +58,12 @@ impl SegmentTree {
         }
     }
 
-    fn gcd(mut a: i32, mut b: i32) -> i32 {
-        while b != 0 {
-            let temp = b;
-            b = a % b;
-            a = temp;
-        }
-        a
-    }
     fn build(&mut self, input: &[i32], vertex: usize, left: usize, right: usize) {
         if left == right {
-            self.tree[vertex].0 = input[left];
+            match self.result {
+                Result::Zeros => self.tree[vertex].0 = if input[left] == 0 { 1 } else { 0 },
+                _ => self.tree[vertex].0 = input[left],
+            }
             self.tree[vertex].1 = 1;
         } else {
             let mid = (left + right) / 2;
@@ -93,7 +89,10 @@ impl SegmentTree {
             return;
         }
         if left == right {
-            self.tree[vertex].0 = value;
+            match self.result {
+                Result::Zeros => self.tree[vertex].0 = if value == 0 { 1 } else { 0 },
+                _ => self.tree[vertex].0 = value,
+            }
             self.tree[vertex].1 = 1;
         } else {
             let mid = (left + right) / 2;
@@ -121,9 +120,33 @@ impl SegmentTree {
         println!();
     }
 
+    fn find_kth_zero(&self, v: usize, left: usize, right: usize, k: i32) -> Option<usize> {
+        if k > self.tree[v].0 {
+            return None;
+        }
+        if left == right {
+            return Some(left);
+        }
+        let mid = (left + right) / 2;
+        if self.tree[v * 2].0 >= k {
+            return self.find_kth_zero(v * 2, left, mid, k);
+        } else {
+            return self.find_kth_zero(v * 2 + 1, mid + 1, right, k - self.tree[v * 2].0);
+        }
+    }
+
     fn is_power_of_two(n: usize) -> bool {
         let n = n + 1;
         n > 0 && (n & (n - 1)) == 0
+    }
+
+    fn gcd(mut a: i32, mut b: i32) -> i32 {
+        while b != 0 {
+            let temp = b;
+            b = a % b;
+            a = temp;
+        }
+        a
     }
 }
 
@@ -153,6 +176,11 @@ fn main() {
     seg_tree.print_tree_structure();
 
     let seg_tree = SegmentTree::construct_and_build(&example_input, Result::LCM);
+    seg_tree.print_tree_structure();
+
+    // Count Zeros
+    let zeros_input = [0, 4, 2, 3, 1, 9, 0];
+    let seg_tree = SegmentTree::construct_and_build(&zeros_input, Result::Zeros);
     seg_tree.print_tree_structure();
 }
 
