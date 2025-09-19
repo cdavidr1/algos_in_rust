@@ -2,10 +2,10 @@ use super::vertex::Vertex;
 pub struct Edge {
     start: Vertex,
     end: Vertex,
-    weight: i32,
+    weight: Option<i32>,
 }
 impl Edge {
-    fn new(start: Vertex, end: Vertex, weight: i32) -> Self {
+    pub fn new(start: Vertex, end: Vertex, weight: Option<i32>) -> Self {
         Self { start, end, weight }
     }
 }

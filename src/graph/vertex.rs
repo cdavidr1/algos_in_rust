@@ -7,8 +7,10 @@ impl Vertex {
     fn new(input: String) -> Self {
         Self {
             data: input,
-            edges: vec![0; 4],
+            edges: Vec::new(),
         }
     }
-    pub fn addEdge(end: Vertex, weight: i32) {}
+    pub fn add_edge(&mut self, end: Vertex, weight: Option<i32>) {
+        self.edges.push(Edge::new(*self, end, weight));
+    }
 }
