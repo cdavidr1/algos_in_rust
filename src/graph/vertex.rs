@@ -1,16 +1,21 @@
 use super::edge::Edge;
 pub struct Vertex {
+    pub id: usize,
     data: String,
     edges: Vec<Edge>,
 }
 impl Vertex {
-    fn new(input: String) -> Self {
+    fn new(id: usize, data: String) -> Self {
         Self {
-            data: input,
+            id,
+            data,
             edges: Vec::new(),
         }
     }
-    pub fn add_edge(&mut self, end: Vertex, weight: Option<i32>) {
-        self.edges.push(Edge::new(*self, end, weight));
+    pub fn add_edge(&mut self, end: usize, weight: Option<i32>) {
+        self.edges.push(Edge::new(self.id, end, weight));
+    }
+    pub fn remove_edge(&mut self, end: usize) {
+        self.edges.retain(|edge| edge.end != end);
     }
 }
