@@ -5,7 +5,7 @@ pub struct Vertex {
     edges: Vec<Edge>,
 }
 impl Vertex {
-    fn new(id: usize, data: String) -> Self {
+    pub fn new(id: usize, data: String) -> Self {
         Self {
             id,
             data,

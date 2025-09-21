@@ -155,8 +155,6 @@ mod segment_tree {
         }
     }
 }
-use function::*;
-use segment_tree::*;
 fn main() {
     let example_input = vec![4, 2, 8];
     let mut seg_tree =
