@@ -155,6 +155,11 @@ mod segment_tree {
         }
     }
 }
+
+use crate::segment_tree::segment_tree::function::Function;
+
+use crate::segment_tree::segment_tree::segment_tree::SegmentTree;
+
 fn main() {
     let example_input = vec![4, 2, 8];
     let mut seg_tree =

@@ -67,5 +67,34 @@ impl Graph {
 
         self.vertices.retain(|v| v.id != vertex_id);
     }
+    fn get_vertex_by_value(&self, value: String) -> Option<&Vertex> {
+        self.vertices.iter().find(|v| v.get_data() == value)
+    }
+    fn get_vertex(&self, id: usize) -> Option<&Vertex> {
+        self.vertices.iter().find(|v| v.id == id)
+    }
+    pub fn print(self, is_weighted: bool) {
+        if self.edges.len() == 0 {
+            println!("{} --> ", self.get_vertex(0).unwrap().get_data());
+        } else {
+            let mut message = String::new();
+            for (i, e) in self.edges.iter().enumerate() {
+                if i == 0 {
+                    let first_data = self.get_vertex(e.start).unwrap().get_data();
+                    message.push_str(first_data);
+                    message.push_str(" --> ");
+                }
+                let next_data = self.get_vertex(e.end).unwrap().get_data();
+                message.push_str(next_data);
+                if is_weighted {
+                    message.push_str(" (");
+                    message.push_str(&e.weight.unwrap().to_string());
+                    message.push_str(")");
+                }
+                message.push_str(", ");
+            }
+            println!("{}", message);
+        }
+    }
 }
 fn main() {}

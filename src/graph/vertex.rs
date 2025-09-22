@@ -18,4 +18,7 @@ impl Vertex {
     pub fn remove_edge(&mut self, end: usize) {
         self.edges.retain(|edge| edge.end != end);
     }
+    pub fn get_data(&self) -> &str {
+        &self.data
+    }
 }
