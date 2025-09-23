@@ -24,7 +24,7 @@ pub mod function {
     }
 }
 
-mod segment_tree {
+pub mod segment_tree {
 
     use super::function::{gcd, is_power_of_two, Function};
 
@@ -122,6 +122,14 @@ mod segment_tree {
                 self.tree[vertex] =
                     self.find_result(self.tree[vertex * 2], self.tree[vertex * 2 + 1]);
             }
+        }
+
+        pub fn get_segment(self, x: usize, y: usize) -> (i32, i32) {
+            self.get_segment_helper(0, 1, x, y)
+        }
+
+        fn get_segment_helper(self, left: usize, right: usize, x: usize, y: usize) -> (i32, i32) {
+            (0, 0)
         }
 
         pub fn print_tree_structure(&self) {
