@@ -125,11 +125,20 @@ pub mod segment_tree {
         }
 
         pub fn get_segment(self, x: usize, y: usize) -> (i32, i32) {
-            self.get_segment_helper(0, 1, x, y)
+            self.get_segment_helper(0, 0, 1, x, y)
         }
 
-        fn get_segment_helper(self, left: usize, right: usize, x: usize, y: usize) -> (i32, i32) {
-            (0, 0)
+        fn get_segment_helper(
+            self,
+            node: usize,
+            left: usize,
+            right: usize,
+            x: usize,
+            y: usize,
+        ) -> (i32, i32) {
+            if x <= left && right >= y {
+                self.tree[node]
+            }
         }
 
         pub fn print_tree_structure(&self) {
