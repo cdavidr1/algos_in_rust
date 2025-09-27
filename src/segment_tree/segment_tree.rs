@@ -129,16 +129,35 @@ pub mod segment_tree {
         }
 
         fn get_segment_helper(
-            self,
-            node: usize,
+            &self,
+            vertex: usize,
             left: usize,
             right: usize,
             x: usize,
             y: usize,
         ) -> (i32, i32) {
-            if x <= left && right >= y {
-                self.tree[node]
+            if x == left && right == y {
+                return self.tree[vertex];
             }
+            if x > y {
+                return match self.result {
+                    Function::Min => (i32::MAX, 0),
+                    Function::Max => (i32::MIN, 0),
+                    Function::Sum | Function::Zeros => (0, 0),
+                    Function::GCD => (0, 0),
+                    Function::LCM => (1, 0),
+                };
+            }
+            let mid = (left + right);
+            let left_result = self.get_segment_helper(vertex * 2, left, mid, x, x.min(mid).max(x));
+            let right_result = self.get_segment_helper(
+                vertex * 2 + 1,
+                mid + 1,
+                right,
+                (mid + 1).max(x),
+                y.min(right),
+            );
+            self.find_result(left_result, right_result)
         }
 
         pub fn print_tree_structure(&self) {
