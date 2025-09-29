@@ -29,8 +29,8 @@ pub mod segment_tree {
     use super::function::{gcd, is_power_of_two, Function};
 
     pub struct SegmentTree {
-        nodes: usize,
-        tree: Vec<(i32, i32)>,
+        pub nodes: usize,
+        pub tree: Vec<(i32, i32)>,
         result: Function,
     }
 
@@ -41,7 +41,7 @@ pub mod segment_tree {
             tree
         }
 
-        fn new(nodes: usize, result: Function) -> Self {
+        pub fn new(nodes: usize, result: Function) -> Self {
             Self {
                 nodes,
                 tree: vec![(0, 0); 4 * nodes],

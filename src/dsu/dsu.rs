@@ -1,14 +1,24 @@
-struct dsu {
-    
+pub struct Dsu {
+    pub parent: [i32; 10],
 }
 
-impl dsu {
-    fn make_set(v: i32) {
-        1
+impl Dsu {
+    pub fn new(_size: usize) -> Self {
+        Self { parent: [0; 10] }
     }
-    fn 
-}
 
+    pub fn make_set(&mut self, v: i32) {
+        self.parent[v as usize] = v;
+    }
+
+    pub fn find_set(&self, v: i32) -> i32 {
+        if v == self.parent[v as usize] {
+            v
+        } else {
+            self.find_set(self.parent[v as usize])
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -16,7 +26,9 @@ mod tests {
 
     #[test]
     fn create_element() {
-        assert!(todo!());
+        let mut dsu_set: Dsu = Dsu::new(20);
+        dsu_set.make_set(20);
+        assert_eq!(dsu_set.find_set(20), *dsu_set.parent.iter().next().unwrap());
     }
 
     #[test]
