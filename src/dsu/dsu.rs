@@ -4,7 +4,7 @@ pub struct Dsu {
 
 impl Dsu {
     pub fn new(_size: usize) -> Self {
-        Self { parent: [0; 10] }
+        Self { parent: [0; _size] }
     }
 
     pub fn make_set(&mut self, v: i32) {
