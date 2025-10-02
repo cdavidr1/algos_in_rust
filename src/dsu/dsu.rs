@@ -1,10 +1,12 @@
 pub struct Dsu {
-    pub parent: [i32; 10],
+    pub parent: Vec<i32>,
 }
 
 impl Dsu {
-    pub fn new(_size: usize) -> Self {
-        Self { parent: [0; _size] }
+    pub fn new(size: usize) -> Self {
+        Self {
+            parent: vec![0; size],
+        }
     }
 
     pub fn make_set(&mut self, v: i32) {
@@ -27,8 +29,9 @@ mod tests {
     #[test]
     fn create_element() {
         let mut dsu_set: Dsu = Dsu::new(20);
-        dsu_set.make_set(20);
-        assert_eq!(dsu_set.find_set(20), *dsu_set.parent.iter().next().unwrap());
+        print!("{:?}", dsu_set.parent);
+        dsu_set.make_set(0);
+        assert_eq!(dsu_set.find_set(0), *dsu_set.parent.iter().next().unwrap());
     }
 
     #[test]
