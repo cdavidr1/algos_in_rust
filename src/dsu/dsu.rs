@@ -1,3 +1,18 @@
+/**
+
+new:
+ 0  1  2  3  4
+[0, 0, 0, 0, 0]
+
+Self reference
+ 0> 1> 2> 3> 4>
+[0, 1, 2, 3, 4] union ops
+[0, 0, 2, 3, 4]
+[0, 0, 2, 3, 3]
+
+
+*/
+
 pub struct Dsu {
     pub parent: Vec<i32>,
 }
