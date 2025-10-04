@@ -2,6 +2,7 @@ mod dsu;
 mod fenwick_tree;
 mod graph;
 mod segment_tree;
+mod stack;
 
 use segment_tree::segment_tree::function::Function;
 use segment_tree::segment_tree::segment_tree::SegmentTree;
