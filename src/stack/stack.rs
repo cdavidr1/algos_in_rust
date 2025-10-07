@@ -1,48 +1,29 @@
-pub struct Stack {
-    nodes: Vec<Node>,
+pub struct Stack<T> {
+    nodes: Vec<T>,
 }
 
-pub struct Node {
-    value: i32,
-    next: Box<Node>,
-    prev: Box<Node>,
-}
-
-impl Node {
-    fn new(value: i32, next: Node, prev: Node) -> Self {
-        Self {
-            value,
-            next: Box::new(next),
-            prev: Box::new(prev),
-        }
-    }
-}
-
-impl Stack {
+impl<T> Stack<T> {
     fn default() -> Self {
         Self { nodes: Vec::new() }
     }
 
-    // Usually we append to the end of LL
-    fn push(self, elem: Node) {
-        self.push(elem);
+    fn push(&mut self, elem: T) {
+        self.nodes.push(elem);
     }
 
-    fn pop(self) {
-        if !self.isEmpty() {
-            todo!();
-        }
+    fn pop(&mut self) -> Option<T> {
+        self.nodes.pop()
     }
 
-    fn peek() {
-        todo!();
+    fn peek(&self) -> Option<&T> {
+        self.nodes.last()
     }
 
-    fn size(self) -> i32 {
-        self.size()
+    fn size(&self) -> usize {
+        self.nodes.len()
     }
 
-    fn isEmpty(self) -> bool {
+    fn is_empty(&self) -> bool {
         self.size() == 0
     }
 }
