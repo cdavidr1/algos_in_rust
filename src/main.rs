@@ -1,6 +1,7 @@
 mod dsu;
 mod fenwick_tree;
 mod graph;
+mod queue;
 mod segment_tree;
 mod stack;
 
