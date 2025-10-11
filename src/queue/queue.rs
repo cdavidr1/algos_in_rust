@@ -1,32 +1,42 @@
+use std::collections::VecDeque;
+
 struct Queue<T> {
-    nodes: Vec<T>,
+    nodes: VecDeque<T>,
 }
 
 // FIFO
 impl<T> Queue<T> {
     fn default() -> Self {
-        Self { nodes: Vec::new() }
+        Self {
+            nodes: VecDeque::new(),
+        }
     }
     // add to back of queue, adding, offering
     fn enqueue(&mut self, elem: T) {
-        self.nodes.push(elem);
+        self.nodes.push_back(elem);
     }
     // remove element from front of queue, polling, 'removing'
-    fn dequeue(&mut self) -> T {
-        self.nodes.remove(0)
+    fn dequeue(&mut self) -> Option<T> {
+        self.nodes.pop_front()
     }
     // view front
     fn peek(&self) -> &T {
         &self.nodes[0]
     }
-    fn contains(&self, elem: &T) -> bool {
-        self.nodes.contains(elem)
+    fn contains(&self, elem: T) -> bool
+    where
+        T: PartialEq,
+    {
+        self.nodes.contains(&elem)
     }
-    fn remove(&mut self, index: usize) -> T {
+    fn remove(&mut self, index: usize) -> Option<T> {
         self.nodes.remove(index)
     }
     fn is_empty(&self) -> bool {
         self.nodes.is_empty()
+    }
+    fn size(&self) -> usize {
+        self.nodes.len()
     }
 }
 
@@ -36,13 +46,43 @@ mod tests {
 
     fn create_q() -> Queue<i32> {
         let mut q = Queue::default();
-        q.enqueue();
         q
     }
 
     #[test]
     fn test_create_q() {
         let mut c = create_q();
-        assert_eq!(c.nodes.len(), 0);
+        assert_eq!(c.size(), 0);
+    }
+
+    #[test]
+    fn test_is_empty() {
+        let mut c = create_q();
+        assert_eq!(c.is_empty(), true);
+    }
+
+    #[test]
+    fn test_peek() {
+        let mut c = create_q();
+        c.enqueue(7);
+        assert_eq!(*c.peek(), 7);
+    }
+
+    #[test]
+    fn test_dequeue() {
+        let mut c = create_q();
+        assert_eq!(c.dequeue(), None)
+    }
+
+    #[test]
+    fn test_remove() {
+        let mut c = create_q();
+        c.enqueue(3);
+        c.enqueue(6);
+        c.enqueue(4);
+        c.enqueue(1);
+        assert_eq!(c.contains(6), true);
+        assert_eq!(c.size(), 4);
+        assert_eq!(c.remove(1), Some(6));
     }
 }
