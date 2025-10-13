@@ -23,6 +23,9 @@ impl<T> Queue<T> {
     fn peek(&self) -> &T {
         &self.nodes[0]
     }
+    fn peek_option(&self) -> Option<&T> {
+        self.nodes.front()
+    }
     fn contains(&self, elem: T) -> bool
     where
         T: PartialEq,
@@ -66,6 +69,7 @@ mod tests {
         let mut c = create_q();
         c.enqueue(7);
         assert_eq!(*c.peek(), 7);
+        assert_eq!(c.peek_option(), Some(7).as_ref());
     }
 
     #[test]
