@@ -10,3 +10,7 @@
 //  for all A, B in the tree
 // leads to max and min heaps for example
 struct PriorityQueue {}
+
+use ::std::collections::BinaryHeap;
+
+// may be possible to negate with a comparator
