@@ -9,7 +9,11 @@
 //  then A is ordered wrt B
 //  for all A, B in the tree
 // leads to max and min heaps for example
-struct PriorityQueue {}
+struct PriorityQueue<T: PartialOrd> {
+    heap_size: usize,
+    heap_capacity: usize,
+    heap: Vec<T>,
+}
 
 use ::std::collections::BinaryHeap;
 
