@@ -15,6 +15,21 @@ struct PriorityQueue<T: PartialOrd> {
     heap: Vec<T>,
 }
 
-use ::std::collections::BinaryHeap;
+impl<T> PriorityQueue<T> {
+    fn new(_size: usize) -> Self {
+        Self {
+            heap: Vec::new(),
+            heap_size: size,
+        }
+    }
+}
 
-// may be possible to negate with a comparator
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_works() {
+        assert_eq!(1, 1);
+    }
+}
