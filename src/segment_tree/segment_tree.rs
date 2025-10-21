@@ -148,7 +148,7 @@ pub mod segment_tree {
                     Function::LCM => (1, 0),
                 };
             }
-            let mid = (left + right);
+            let mid = left + right;
             let left_result = self.get_segment_helper(vertex * 2, left, mid, x, x.min(mid).max(x));
             let right_result = self.get_segment_helper(
                 vertex * 2 + 1,

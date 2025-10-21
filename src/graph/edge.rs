@@ -1,4 +1,3 @@
-use super::vertex::Vertex;
 pub struct Edge {
     pub start: usize,
     pub end: usize,
