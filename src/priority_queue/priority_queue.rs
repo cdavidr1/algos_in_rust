@@ -10,14 +10,21 @@
 //  for all A, B in the tree
 // leads to max and min heaps for example
 use std::collections::{BTreeSet, HashMap};
+use std::hash::Hash;
 
-struct PriorityQueue<T: PartialOrd> {
+struct PriorityQueue<T>
+where
+    T: PartialOrd + Hash + Eq,
+{
     heap_size: usize,
     heap: Vec<T>,
     position_map: HashMap<T, BTreeSet<usize>>,
 }
 
-impl<T: PartialOrd> PriorityQueue<T> {
+impl<T> PriorityQueue<T>
+where
+    T: PartialOrd + Hash + Eq,
+{
     fn new(size: usize) -> Self {
         Self {
             heap: Vec::new(),
@@ -26,7 +33,15 @@ impl<T: PartialOrd> PriorityQueue<T> {
         }
     }
 
-    fn map_add(elem: T, index: usize) {}
+    fn map_add(&mut self, elem: T, index: usize) {
+        if let Some(set) = self.position_map.get_mut(&elem) {
+            set.insert(index);
+        } else {
+            let mut set = BTreeSet::new();
+            set.insert(index);
+            self.position_map.insert(elem, set);
+        }
+    }
 
     fn sink(index: usize) {}
 
