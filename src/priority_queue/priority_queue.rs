@@ -14,7 +14,7 @@ use std::hash::Hash;
 
 struct PriorityQueue<T>
 where
-    T: PartialOrd + Hash + Eq,
+    T: PartialOrd + Hash + Eq + Clone,
 {
     heap_size: usize,
     heap: Vec<T>,
@@ -23,7 +23,7 @@ where
 
 impl<T> PriorityQueue<T>
 where
-    T: PartialOrd + Hash + Eq,
+    T: PartialOrd + Hash + Eq + Clone,
 {
     fn new(size: usize) -> Self {
         Self {
@@ -33,28 +33,65 @@ where
         }
     }
 
+    fn make_p_q(elems: &[T]) -> Self {
+        let mut p_q = PriorityQueue::new(elems.len());
+        for (index, elem) in elems.iter().enumerate() {
+            p_q.heap.push(elem.clone());
+            p_q.map_add(elem.clone(), index);
+        }
+        let mut i = 0.max((p_q.heap_size / 2) as isize - 1);
+        while i >= 0 {
+            p_q.sink(i as usize);
+            i -= 1;
+        }
+        p_q
+    }
+
     fn map_add(&mut self, elem: T, index: usize) {
-        if let Some(set) = self.position_map.get_mut(&elem) {
-            set.insert(index);
-        } else {
-            let mut set = BTreeSet::new();
-            set.insert(index);
-            self.position_map.insert(elem, set);
+        self.position_map
+            .entry(elem)
+            .or_insert_with(BTreeSet::new)
+            .insert(index);
+    }
+
+    fn sink(&mut self, mut index: usize) {
+        loop {
+            let left = 2 * index + 1;
+            let right = 2 * index + 2;
+            let mut smallest = left;
+
+            if right < self.size() && self.less(right, left) {
+                smallest = right;
+            }
+
+            if left >= self.size() || self.less(index, smallest) {
+                break;
+            }
+
+            self.swap(smallest, index);
+            index = smallest;
         }
     }
 
-    fn sink(index: usize) {}
-
     fn swim(size: usize) {}
 
-    fn less(i: usize, j: usize) {}
+    fn less(&self, i: usize, j: usize) -> bool {
+        let node_a = self.heap.get(i).unwrap();
+        let node_b = self.heap.get(j).unwrap();
+        node_a <= node_b
+    }
 
-    // simple
     fn is_empty() {}
 
     fn clear() {}
 
-    fn size() {}
+    fn size(&self) -> usize {
+        self.heap.len()
+    }
+
+    fn swap(&mut self, i: usize, j: usize) {
+        self.heap.swap(i, j);
+    }
 
     fn peek() {}
 
