@@ -54,6 +54,13 @@ where
             .insert(index);
     }
 
+    fn map_update(&mut self, elem: &T, old: usize, new: usize) {
+        if let Some(pos) = self.position_map.get_mut(elem) {
+            pos.remove(&old);
+            pos.insert(new);
+        }
+    }
+
     fn sink(&mut self, mut index: usize) {
         loop {
             let left = 2 * index + 1;
@@ -73,7 +80,14 @@ where
         }
     }
 
-    fn swim(size: usize) {}
+    fn swim(&mut self, mut index: usize) {
+        let mut parent = (index - 1) / 2;
+        while index > 0 && self.less(index, parent) {
+            self.swap(parent, index);
+            index = parent;
+            parent = (index - 1) / 2;
+        }
+    }
 
     fn less(&self, i: usize, j: usize) -> bool {
         let node_a = self.heap.get(i).unwrap();
@@ -81,21 +95,38 @@ where
         node_a <= node_b
     }
 
-    fn is_empty() {}
+    fn is_empty(&self) -> bool {
+        self.size() == 0
+    }
 
-    fn clear() {}
+    fn clear(&mut self) {
+        self.heap.clear();
+        self.position_map.clear();
+    }
 
     fn size(&self) -> usize {
         self.heap.len()
     }
 
     fn swap(&mut self, i: usize, j: usize) {
+        let elem_i = self.heap[i].clone();
+        let elem_j = self.heap[j].clone();
         self.heap.swap(i, j);
+        self.map_update(&elem_i, i, j);
+        self.map_update(&elem_j, j, i);
     }
 
-    fn peek() {}
+    fn peek(&self) -> Option<&T> {
+        if self.is_empty() {
+            None
+        } else {
+            self.heap.get(0)
+        }
+    }
 
-    fn poll() {}
+    fn poll(&mut self) {}
+
+    fn removeAt(i: usize) {}
 
     fn contains(elem: T) {}
 
