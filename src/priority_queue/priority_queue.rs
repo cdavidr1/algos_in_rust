@@ -16,7 +16,6 @@ struct PriorityQueue<T>
 where
     T: PartialOrd + Hash + Eq + Clone,
 {
-    heap_size: usize,
     heap: Vec<T>,
     position_map: HashMap<T, BTreeSet<usize>>,
 }
@@ -28,7 +27,6 @@ where
     fn new(size: usize) -> Self {
         Self {
             heap: Vec::new(),
-            heap_size: size,
             position_map: HashMap::new(),
         }
     }
@@ -39,7 +37,7 @@ where
             p_q.heap.push(elem.clone());
             p_q.map_add(elem.clone(), index);
         }
-        let mut i = 0.max((p_q.heap_size / 2) as isize - 1);
+        let mut i = 0.max((p_q.size() / 2) as isize - 1);
         while i >= 0 {
             p_q.sink(i as usize);
             i -= 1;
@@ -58,6 +56,12 @@ where
         if let Some(pos) = self.position_map.get_mut(elem) {
             pos.remove(&old);
             pos.insert(new);
+        }
+    }
+
+    fn map_remove(&mut self, elem: &T, index: usize) {
+        if let Some(pos) = self.position_map.get_mut(elem) {
+            pos.remove(&index);
         }
     }
 
@@ -81,8 +85,11 @@ where
     }
 
     fn swim(&mut self, mut index: usize) {
-        let mut parent = (index - 1) / 2;
-        while index > 0 && self.less(index, parent) {
+        while index > 0 {
+            let mut parent = (index - 1) / 2;
+            if !self.less(index, parent) {
+                break;
+            }
             self.swap(parent, index);
             index = parent;
             parent = (index - 1) / 2;
@@ -92,7 +99,7 @@ where
     fn less(&self, i: usize, j: usize) -> bool {
         let node_a = self.heap.get(i).unwrap();
         let node_b = self.heap.get(j).unwrap();
-        node_a <= node_b
+        node_a < node_b
     }
 
     fn is_empty(&self) -> bool {
@@ -124,13 +131,43 @@ where
         }
     }
 
-    fn poll(&mut self) {}
+    fn poll(&mut self) -> Option<T> {
+        self.remove_at(0)
+    }
 
-    fn removeAt(i: usize) {}
+    fn remove_at(&mut self, index: usize) -> Option<T> {
+        if !self.is_empty() {
+            let last_index = self.size() - 1;
+            let elem = self.heap.get(index).unwrap().clone();
 
-    fn contains(elem: T) {}
+            self.swap(index, last_index);
+            self.heap.remove(last_index);
+            self.map_remove(&elem, index);
 
-    fn add(elem: T) {}
+            if index == last_index {
+                return Some(elem);
+            }
+
+            let reorder_elem = self.heap.get(index).unwrap().clone();
+            self.sink(index);
+            if self.heap.get(index).unwrap().eq(&reorder_elem) {
+                self.swim(index);
+            }
+            return Some(elem);
+        }
+        return None;
+    }
+
+    fn contains(&self, elem: T) -> bool {
+        self.position_map.contains_key(&elem)
+    }
+
+    fn add(&mut self, elem: T) {
+        self.heap.push(elem.clone());
+        let index = self.size() - 1;
+        self.map_add(elem.clone(), index);
+        self.swim(index);
+    }
 }
 
 #[cfg(test)]
@@ -145,6 +182,6 @@ mod tests {
     #[test]
     fn test_create() {
         let p_q: PriorityQueue<i32> = PriorityQueue::new(10);
-        assert_eq!(p_q.heap_size, 10);
+        assert_eq!(p_q.size(), 10);
     }
 }
