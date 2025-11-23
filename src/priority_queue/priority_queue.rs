@@ -24,7 +24,7 @@ impl<T> PriorityQueue<T>
 where
     T: PartialOrd + Hash + Eq + Clone,
 {
-    fn new(size: usize) -> Self {
+    fn new() -> Self {
         Self {
             heap: Vec::new(),
             position_map: HashMap::new(),
@@ -32,7 +32,7 @@ where
     }
 
     fn make_p_q(elems: &[T]) -> Self {
-        let mut p_q = PriorityQueue::new(elems.len());
+        let mut p_q = PriorityQueue::new();
         for (index, elem) in elems.iter().enumerate() {
             p_q.heap.push(elem.clone());
             p_q.map_add(elem.clone(), index);
@@ -175,13 +175,19 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_clear() {
+        let mut p_q = _create();
+        p_q.clear();
+        assert_eq!(p_q.size(), 0);
+    }
+
+    #[test]
     fn test_works() {
         assert_eq!(1, 1);
     }
 
-    #[test]
-    fn test_create() {
-        let p_q: PriorityQueue<i32> = PriorityQueue::new(10);
-        assert_eq!(p_q.size(), 10);
+    fn _create() -> PriorityQueue<i32> {
+        let p_q: PriorityQueue<i32> = PriorityQueue::new();
+        p_q
     }
 }
