@@ -1,9 +1,9 @@
-struct FenwickTree {
+pub struct FenwickTree {
     bit: Vec<i32>,
     nodes: usize,
 }
 impl FenwickTree {
-    fn construct_and_build(input: &[i32]) -> Self {
+    pub fn construct_and_build(input: &[i32]) -> Self {
         let mut tree = Self::new(input);
         for i in 0..tree.bit.len() {
             tree.add(i, input[i]);
@@ -16,14 +16,14 @@ impl FenwickTree {
             nodes: input.len(),
         }
     }
-    fn add(&mut self, mut idx: usize, delta: i32) {
+    pub fn add(&mut self, mut idx: usize, delta: i32) {
         while idx < self.nodes {
             self.bit[idx] += delta;
             idx = idx | (idx + 1);
         }
     }
     // [0, r] sum
-    fn range_sum_from_zero(&self, mut r: usize) -> i32 {
+    pub fn range_sum_from_zero(&self, mut r: usize) -> i32 {
         let mut sum = 0;
         loop {
             sum += self.bit[r];
@@ -36,7 +36,7 @@ impl FenwickTree {
         sum
     }
     // [l, r]
-    fn range_sum(&self, l: usize, r: usize) -> i32 {
+    pub fn range_sum(&self, l: usize, r: usize) -> i32 {
         if l == 0 {
             self.range_sum_from_zero(r)
         } else {

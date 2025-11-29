@@ -60,7 +60,10 @@ where
     }
 
     fn map_remove(&mut self, elem: &T, index: usize) {
-        if let Some(pos) = self.position_map.get_mut(elem) {
+        if let std::collections::hash_map::Entry::Occupied(mut entry) = self.position_map.entry(elem.clone()) {
+            let set = entry.
+            set.remove(&index);
+            if set.is
             pos.remove(&index);
         }
     }
@@ -86,13 +89,12 @@ where
 
     fn swim(&mut self, mut index: usize) {
         while index > 0 {
-            let mut parent = (index - 1) / 2;
+            let parent = (index - 1) / 2;
             if !self.less(index, parent) {
                 break;
             }
             self.swap(parent, index);
             index = parent;
-            parent = (index - 1) / 2;
         }
     }
 
@@ -116,6 +118,9 @@ where
     }
 
     fn swap(&mut self, i: usize, j: usize) {
+        if i == j {
+            return;
+        }
         let elem_i = self.heap[i].clone();
         let elem_j = self.heap[j].clone();
         self.heap.swap(i, j);
