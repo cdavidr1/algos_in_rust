@@ -1,30 +1,43 @@
+#[derive(Debug, Clone, PartialEq)]
 pub struct Stack<T> {
     nodes: Vec<T>,
 }
 
 impl<T> Stack<T> {
-    fn default() -> Self {
+    pub fn new() -> Self {
         Self { nodes: Vec::new() }
     }
 
-    fn push(&mut self, elem: T) {
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            nodes: Vec::with_capacity(capacity),
+        }
+    }
+
+    pub fn push(&mut self, elem: T) {
         self.nodes.push(elem);
     }
 
-    fn pop(&mut self) -> Option<T> {
+    pub fn pop(&mut self) -> Option<T> {
         self.nodes.pop()
     }
 
-    fn peek(&self) -> Option<&T> {
+    pub fn peek(&self) -> Option<&T> {
         self.nodes.last()
     }
 
-    fn size(&self) -> usize {
+    pub fn size(&self) -> usize {
         self.nodes.len()
     }
 
-    fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.size() == 0
+    }
+}
+
+impl<T> Default for Stack<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

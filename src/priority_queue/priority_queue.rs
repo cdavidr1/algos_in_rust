@@ -59,14 +59,7 @@ where
         }
     }
 
-    fn map_remove(&mut self, elem: &T, index: usize) {
-        if let std::collections::hash_map::Entry::Occupied(mut entry) = self.position_map.entry(elem.clone()) {
-            let set = entry.
-            set.remove(&index);
-            if set.is
-            pos.remove(&index);
-        }
-    }
+    fn map_remove(&mut self, elem: &T, index: usize) {}
 
     fn sink(&mut self, mut index: usize) {
         loop {
