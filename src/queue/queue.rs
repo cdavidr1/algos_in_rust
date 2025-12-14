@@ -1,45 +1,53 @@
 use std::collections::VecDeque;
 
-struct Queue<T> {
+#[derive(Debug, Clone, PartialEq)]
+pub struct Queue<T> {
     nodes: VecDeque<T>,
 }
 
 // FIFO
 impl<T> Queue<T> {
-    fn default() -> Self {
+    pub fn new() -> Self {
         Self {
             nodes: VecDeque::new(),
         }
     }
     // add to back of queue, adding, offering
-    fn enqueue(&mut self, elem: T) {
+    pub fn enqueue(&mut self, elem: T) {
         self.nodes.push_back(elem);
     }
     // remove element from front of queue, polling, 'removing'
-    fn dequeue(&mut self) -> Option<T> {
+    pub fn dequeue(&mut self) -> Option<T> {
         self.nodes.pop_front()
     }
     // view front
-    fn peek(&self) -> &T {
-        &self.nodes[0]
-    }
-    fn peek_option(&self) -> Option<&T> {
+    pub fn peek_option(&self) -> Option<&T> {
         self.nodes.front()
     }
-    fn contains(&self, elem: T) -> bool
+
+    pub fn contains(&self, elem: T) -> bool
     where
         T: PartialEq,
     {
         self.nodes.contains(&elem)
     }
-    fn remove(&mut self, index: usize) -> Option<T> {
+
+    pub fn remove(&mut self, index: usize) -> Option<T> {
         self.nodes.remove(index)
     }
-    fn is_empty(&self) -> bool {
+
+    pub fn is_empty(&self) -> bool {
         self.nodes.is_empty()
     }
-    fn size(&self) -> usize {
+
+    pub fn size(&self) -> usize {
         self.nodes.len()
+    }
+}
+
+impl<T> Default for Queue<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -48,19 +56,19 @@ mod tests {
     use super::*;
 
     fn create_q() -> Queue<i32> {
-        let mut q = Queue::default();
+        let q = Queue::default();
         q
     }
 
     #[test]
     fn test_create_q() {
-        let mut c = create_q();
+        let c = create_q();
         assert_eq!(c.size(), 0);
     }
 
     #[test]
     fn test_is_empty() {
-        let mut c = create_q();
+        let c = create_q();
         assert_eq!(c.is_empty(), true);
     }
 
@@ -68,7 +76,6 @@ mod tests {
     fn test_peek() {
         let mut c = create_q();
         c.enqueue(7);
-        assert_eq!(*c.peek(), 7);
         assert_eq!(c.peek_option(), Some(7).as_ref());
     }
 

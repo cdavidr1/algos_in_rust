@@ -53,6 +53,12 @@ mod tests {
         s
     }
 
+    fn create_stack_w_capacity() -> Stack<i32> {
+        let mut s = Stack::with_capacity(10);
+        s.push(3);
+        s
+    }
+
     #[test]
     fn test_pop() {
         let mut pop = create_stack();
@@ -74,7 +80,7 @@ mod tests {
 
     #[test]
     fn test_not_empty() {
-        let ne = create_stack();
+        let ne = create_stack_w_capacity();
         assert_eq!(false, ne.is_empty());
     }
 }
