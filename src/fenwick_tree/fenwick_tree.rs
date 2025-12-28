@@ -57,4 +57,16 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn create_ft() -> FenwickTree {
+        let input = vec![2, 3, 4, 5];
+
+        FenwickTree::construct_and_build(&input)
+    }
+
+    #[test]
+    fn test_create() {
+        let ft = create_ft();
+        assert_ne!(ft.nodes, 0);
+    }
 }
