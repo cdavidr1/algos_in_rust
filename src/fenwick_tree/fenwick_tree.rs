@@ -44,16 +44,7 @@ impl FenwickTree {
         }
     }
 }
-fn main() {
-    let input = vec![2, 3, 4, 5];
 
-    let tree = FenwickTree::construct_and_build(&input);
-
-    println!("Input: {:?}", input);
-    println!("Fenwick: {:?}", tree.bit);
-    println!("[0, 2] sum = {}", tree.range_sum_from_zero(2));
-    println!("[1, 3] sum = {}", tree.range_sum(1, 3));
-}
 #[cfg(test)]
 mod tests {
     use super::*;
