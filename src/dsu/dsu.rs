@@ -50,13 +50,4 @@ mod tests {
         assert_eq!(dsu_set.find_set(0), *dsu_set.parent.iter().next().unwrap());
     }
 
-    #[test]
-    fn merge_two_sets() {
-        assert!(todo!());
-    }
-
-    #[test]
-    fn find_representative() {
-        assert!(todo!());
-    }
 }
