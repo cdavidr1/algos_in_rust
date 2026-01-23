@@ -59,7 +59,7 @@ where
         }
     }
 
-    fn map_remove(&mut self, elem: &T, index: usize) {}
+    // fn map_remove(&mut self, elem: &T, index: usize) {}
 
     fn sink(&mut self, mut index: usize) {
         loop {
@@ -140,7 +140,7 @@ where
 
             self.swap(index, last_index);
             self.heap.remove(last_index);
-            self.map_remove(&elem, index);
+            // self.map_remove(&elem, index);
 
             if index == last_index {
                 return Some(elem);
