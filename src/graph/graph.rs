@@ -98,3 +98,18 @@ impl Graph {
     }
 }
 fn main() {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test] // <--- Add this!
+    fn create_graph() {
+        let mut g = Graph::new(true, true);
+        g.add_vertex(String::from("1"));
+        g.add_vertex(String::from("2"));
+        g.add_edge(1, 2, Some(3));
+        // You might want to assert something here
+        assert_eq!(g.is_directed, true);
+    }
+}
