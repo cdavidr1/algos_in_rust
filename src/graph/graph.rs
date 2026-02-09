@@ -75,7 +75,9 @@ impl Graph {
     }
     pub fn print(self, is_weighted: bool) {
         if self.edges.len() == 0 {
-            println!("{} --> ", self.get_vertex(0).unwrap().get_data());
+            if !self.get_vertex(0).is_none() {
+                println!("{} --> ", self.get_vertex(0).unwrap().get_data());
+            }
         } else {
             let mut message = String::new();
             for (i, e) in self.edges.iter().enumerate() {
@@ -109,7 +111,12 @@ mod tests {
         g.add_vertex(String::from("1"));
         g.add_vertex(String::from("2"));
         g.add_edge(1, 2, Some(3));
+        g.remove_edge(1, 2);
+        g.remove_vertex(1);
+        g.get_vertex_by_value(String::from("2"));
+        g.get_vertex(2);
         // You might want to assert something here
         assert_eq!(g.is_directed, true);
+        g.print(true);
     }
 }
