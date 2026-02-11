@@ -99,7 +99,6 @@ impl Graph {
         }
     }
 }
-fn main() {}
 
 #[cfg(test)]
 mod tests {
