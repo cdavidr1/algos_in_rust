@@ -6,24 +6,32 @@ mod queue;
 mod segment_tree;
 mod stack;
 
-use segment_tree::segment_tree::function::Function;
-use segment_tree::segment_tree::segment_tree::SegmentTree;
-
-use crate::dsu::dsu::Dsu;
-use crate::fenwick_tree::fenwick_tree::FenwickTree;
+use std::io::{self, BufRead};
 
 fn main() {
-    let example_input = vec![4, 2, 8, 1, 3, 9, 12];
-    let seg_tree = SegmentTree::construct_and_build(&example_input, Function::Min);
-    println!("{:?}", seg_tree.get_segment(1, 3));
+    let stdin = io::stdin();
+    let mut line = String::new();
+    let mut times = 5;
+    let mut stored = Vec::new();
 
-    // Warnings
-    let mut new_dsu: Dsu = Dsu::new(5);
-    new_dsu.make_set(5);
-    new_dsu.find_set(5);
+    while times > 0 {
+        line.clear();
+        stdin.read_line(&mut line).expect("Failed to read line");
+        stored.push(String::from(line.trim()));
+        times -= 1;
+    }
 
-    let mut new_ft: FenwickTree = FenwickTree::construct_and_build(&[1, 2, 3]);
-    new_ft.add(1, 1);
-    new_ft.range_sum(1, 2);
-    new_ft.range_sum_from_zero(1);
+    for s in &stored {
+        // get
+        let mut s_count = 0;
+        for a in &stored {
+            if a == s {
+                s_count += 1;
+            }
+        }
+
+        if s_count == 1 {
+            println!("Unique found: {}", s);
+        }
+    }
 }
