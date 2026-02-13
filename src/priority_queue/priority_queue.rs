@@ -173,6 +173,12 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_call() {
+        let example_input = vec![4, 2, 8];
+        PriorityQueue::make_p_q(&example_input);
+    }
+
+    #[test]
     fn test_clear() {
         let mut p_q = _create();
         p_q.clear();
