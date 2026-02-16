@@ -6,32 +6,10 @@ mod queue;
 mod segment_tree;
 mod stack;
 
-use std::io::{self, BufRead};
-
 fn main() {
-    let stdin = io::stdin();
-    let mut line = String::new();
-    let mut times = 5;
-    let mut stored = Vec::new();
+    let concat = concat_str("abc", "def");
+}
 
-    while times > 0 {
-        line.clear();
-        stdin.read_line(&mut line).expect("Failed to read line");
-        stored.push(String::from(line.trim()));
-        times -= 1;
-    }
-
-    for s in &stored {
-        // get
-        let mut s_count = 0;
-        for a in &stored {
-            if a == s {
-                s_count += 1;
-            }
-        }
-
-        if s_count == 1 {
-            println!("Unique found: {}", s);
-        }
-    }
+fn concat_str(a: &str, b: &str) -> String {
+    a.to_string() + b
 }
