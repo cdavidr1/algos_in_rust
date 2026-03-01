@@ -8,6 +8,9 @@ fn main() {
         "third".to_string(),
     ];
     println!("{:?}", swap_first_last(&mut swap_test));
+
+    let words = ["abc", "five", "three"];
+    println!("{:?}", longest_ref(&words));
 }
 
 fn _abc(a: &mut Vec<i32>) {
@@ -25,4 +28,15 @@ fn swap_first_last(v: &mut Vec<String>) -> &Vec<String> {
     let last_index = v.len() - 1;
     v.swap(0, last_index);
     v
+}
+
+// return ref to longest string in a slice
+fn longest_ref<'a>(s: &'a [&str]) -> &'a str {
+    let mut x = "";
+    for &st in s {
+        if st.len() > x.len() {
+            x = st;
+        }
+    }
+    x
 }
