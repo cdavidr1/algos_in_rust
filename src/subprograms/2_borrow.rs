@@ -11,6 +11,9 @@ fn main() {
 
     let words = ["abc", "five", "three"];
     println!("{:?}", longest_ref(&words));
+
+    println!("{:?}", trim_and_append_world(String::from("hello"), true));
+    println!("{:?}", trim_and_append_world(String::from("hello"), false));
 }
 
 fn _abc(a: &mut Vec<i32>) {
@@ -39,4 +42,19 @@ fn longest_ref<'a>(s: &'a [&str]) -> &'a str {
         }
     }
     x
+}
+
+// trim option
+fn trim_and_append_world(mut s: String, o: bool) -> String {
+    s = s.trim().to_string();
+    if s == "hello" {
+        s = s.to_uppercase();
+    }
+
+    if o {
+        s = s + " world!";
+    } else {
+        s.push_str(" world!");
+    }
+    s
 }
