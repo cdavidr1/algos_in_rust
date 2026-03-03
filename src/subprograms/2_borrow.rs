@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 fn main() {
     let mut v = Vec::new();
     _abc(&mut v);
@@ -12,8 +14,20 @@ fn main() {
     let words = ["abc", "five", "three"];
     println!("{:?}", longest_ref(&words));
 
-    println!("{:?}", trim_and_append_world(String::from("hello"), true));
-    println!("{:?}", trim_and_append_world(String::from("hello"), false));
+    const ITERATIONS: usize = 1_000_000;
+
+    let start = Instant::now();
+    for _ in 0..ITERATIONS {
+        trim_and_append_world(String::from("hello"), true);
+    }
+    let d1 = start.elapsed();
+    println!("{:?}", d1);
+    let start = Instant::now();
+    for _ in 0..ITERATIONS {
+        trim_and_append_world(String::from("hello"), false);
+    }
+    let d2 = start.elapsed();
+    println!("{:?}", d2);
 }
 
 fn _abc(a: &mut Vec<i32>) {
@@ -44,7 +58,7 @@ fn longest_ref<'a>(s: &'a [&str]) -> &'a str {
     x
 }
 
-// trim option
+// trim option benchmark next time
 fn trim_and_append_world(mut s: String, o: bool) -> String {
     s = s.trim().to_string();
     if s == "hello" {
