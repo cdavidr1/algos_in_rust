@@ -4,7 +4,7 @@ path = "src/main.rs"
 
 [[bin]]
 name = "subprogram1"
-path = "src/subprograms/2_borrow.rs"
+path = "src/subprograms/3_strings.rs"
 
 [package]
 name = "algos_in_rust"
