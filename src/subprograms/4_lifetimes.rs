@@ -6,7 +6,14 @@
 
 fn main() {
     println!("{:?}", longest("abcd", "a"));
-    println!("{:?}", longest_b("abcd", "a"));
+    // println!("{:?}", longest_b("abcd", "a"));
+    //
+    //
+
+    let mut h = Holder::new("abc");
+    println!("{:?}", h.get());
+    h.extends("kek");
+    println!("{:?}", h.get());
 }
 
 fn longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
@@ -24,3 +31,30 @@ fn longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
 //     };
 //     &local
 // }
+
+// Create a struct Holder<'a> { data: &'a str } with a method
+//  get(&self) -> &'a str and another extend(&mut self, extra: &'a str)
+// that appends to an internal String (you'll need to fight mutability + lifetime conflicts).
+//
+
+struct Holder {
+    data: String,
+    // data: &'a str,
+}
+
+impl Holder {
+    fn new(data: &str) -> Self {
+        Holder {
+            data: data.to_string(),
+        }
+    }
+    // fn get(&self) -> &'a str {
+    //     self.data
+    // }
+    fn get(&self) -> &String {
+        &self.data
+    }
+    fn extends(&mut self, extra: &str) {
+        self.data = self.data.to_string() + extra;
+    }
+}
