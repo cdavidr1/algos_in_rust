@@ -1,6 +1,12 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
-fn main() {}
+fn main() {
+    let mut l = UniqueList::new();
+    l.add("s".to_string());
+    l.add("s".to_string());
+    println!("{:?}", l.contains("s"));
+    println!("{:?}", l.len());
+}
 
 struct Cache {
     map: HashMap<String, usize>,
@@ -17,5 +23,26 @@ impl Cache {
     }
     fn get(&self, key: &str) -> Option<&usize> {
         self.map.get(key)
+    }
+}
+
+struct UniqueList {
+    list: HashSet<String>,
+}
+
+impl UniqueList {
+    fn new() -> Self {
+        Self {
+            list: HashSet::new(),
+        }
+    }
+    fn add(&mut self, s: String) {
+        self.list.insert(s);
+    }
+    fn contains(&self, s: &str) -> bool {
+        self.list.contains(s)
+    }
+    fn len(&self) -> usize {
+        self.list.len()
     }
 }
