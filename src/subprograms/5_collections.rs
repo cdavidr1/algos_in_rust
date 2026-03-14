@@ -6,7 +6,19 @@ fn main() {
     l.add("s".to_string());
     println!("{:?}", l.contains("s"));
     println!("{:?}", l.len());
+
+    // let s = build_set();
+    // println!("{:?}", s.len());
 }
+
+// fn build_set<'a>() -> HashSet<&'a str> {
+//     let local = String::from("ABC");
+//     let slice = &local[..];
+
+//     let mut s: HashSet<&str> = HashSet::new();
+//     s.insert(slice);
+//     s // ← trying to return it
+// }
 
 struct Cache {
     map: HashMap<String, usize>,
