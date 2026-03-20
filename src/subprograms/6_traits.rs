@@ -30,3 +30,24 @@ impl Internable for &str {
         (*self).to_string()
     }
 }
+
+struct Interner {
+    pool: Vec<String>,
+}
+impl Interner {
+    fn new() -> Self {
+        Interner { pool: Vec::new() }
+    }
+    fn fall(&mut self, input: &str) -> Result<&str, &'static str> {
+        if self.pool.len() > 100 {
+            return Err("full");
+        }
+
+        if let Some(existing) = self.pool.iter().position(|s| s == &input) {
+            return Ok(&self.pool[existing]);
+        }
+
+        self.pool.push(input.to_string());
+        Ok(self.pool.last().unwrap())
+    }
+}
