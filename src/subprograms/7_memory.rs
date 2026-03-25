@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+use std::cell::RefCell;
+use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
 fn main() {
@@ -9,16 +10,25 @@ fn main() {
     println!("a points to c: {}", std::ptr::eq(&*a, &*c));
     println!("count hello {}", Rc::strong_count(&a));
     println!("count world {}", Rc::strong_count(&b));
+
+    let d = pool.internrc("blah");
+    let e = pool.internrc("blah");
+    println!(
+        "Unique strings in poolrc: {}",
+        pool.poolRefCell.borrow().len()
+    );
 }
 
 struct StringPool {
     pool: HashMap<String, Rc<String>>,
+    poolRefCell: RefCell<HashSet<String>>,
 }
 
 impl StringPool {
     fn new() -> Self {
         StringPool {
             pool: HashMap::new(),
+            poolRefCell: RefCell::new(HashSet::new()),
         }
     }
 
@@ -30,5 +40,20 @@ impl StringPool {
         let rc = Rc::new(s.to_string());
         self.pool.insert(s.to_string(), Rc::clone(&rc));
         rc
+    }
+
+    fn internrc(&self, s: &str) -> String {
+        // immutable borrow for existence
+        {
+            let pool = self.poolRefCell.borrow();
+            if let Some(existing) = pool.get(s) {
+                return existing.clone();
+            }
+        }
+
+        let mut pool = self.poolRefCell.borrow_mut();
+        let owned = s.to_string();
+        pool.insert(owned.clone());
+        owned
     }
 }
