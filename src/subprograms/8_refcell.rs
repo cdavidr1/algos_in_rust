@@ -1,6 +1,7 @@
 use std::{
     cell::{Ref, RefCell},
     collections::HashMap,
+    rc::{Rc, Weak},
 };
 
 fn main() {
@@ -25,7 +26,11 @@ fn main() {
     // let val = m.get("apple").unwrap(); // ← immutable borrow acquired
     // assert_eq!(*val, 5);
     m.insert("pear".to_string(), 4);
+
+    do_linked_list_ops();
 }
+
+fn do_linked_list_ops() {}
 
 struct SharedCounter {
     count: RefCell<usize>,
@@ -60,4 +65,10 @@ impl MutableMap {
     fn get(&self, key: &str) -> Option<Ref<'_, i32>> {
         Ref::filter_map(self.map.borrow(), |map| map.get(key)).ok()
     }
+}
+
+struct Node {
+    value: i32,
+    next: Option<Rc<RefCell<Node>>>,
+    prev: Option<Weak<RefCell<Node>>>,
 }
