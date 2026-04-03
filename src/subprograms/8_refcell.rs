@@ -72,3 +72,8 @@ struct Node {
     next: Option<Rc<RefCell<Node>>>,
     prev: Option<Weak<RefCell<Node>>>,
 }
+
+struct DoublyLinkedList {
+    head: Option<Rc<RefCell<Node>>>,
+    tail: Option<Rc<RefCell<Node>>>,
+}
