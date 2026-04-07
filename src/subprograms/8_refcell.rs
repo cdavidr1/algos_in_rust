@@ -77,3 +77,33 @@ struct DoublyLinkedList {
     head: Option<Rc<RefCell<Node>>>,
     tail: Option<Rc<RefCell<Node>>>,
 }
+
+impl DoublyLinkedList {
+    fn new() -> Self {
+        DoublyLinkedList {
+            head: None,
+            tail: None,
+        }
+    }
+
+    fn push_front(&mut self, value: i32) {
+        // init Node
+        // since front, we point next to current head
+        let new = Rc::new(RefCell::new(Node {
+            value,
+            next: self.head.clone(),
+            prev: None,
+        }));
+
+        // get current head as old
+        // set new as the prev
+        if let Some(old_head) = self.head.as_ref() {
+            old_head.borrow_mut().prev = Some(Rc::downgrade(&new));
+        } else {
+            self.tail = Some(new.clone());
+        }
+
+        // set head to new
+        self.head = Some(new);
+    }
+}
