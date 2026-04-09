@@ -18,7 +18,7 @@ fn main() {
     m.insert("orange".to_string(), 6);
 
     if let Some(val) = m.get("apple") {
-        assert_eq!(*val, 5);
+        assert_eq!(*val, 5)
     };
 
     // without if let, guard is not dropped
@@ -105,5 +105,20 @@ impl DoublyLinkedList {
 
         // set head to new
         self.head = Some(new);
+    }
+
+    fn push_back(&mut self, value: i32) {
+        let new = Rc::new(RefCell::new(Node {
+            value,
+            next: None,
+            prev: self.tail.as_ref().map(Rc::downgrade),
+        }));
+
+        if let Some(old_tail) = self.tail.as_ref() {
+            old_tail.borrow_mut().next = Some(new.clone());
+        } else {
+            self.head = Some(new.clone());
+        }
+        self.tail = Some(new);
     }
 }
